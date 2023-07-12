@@ -12,10 +12,10 @@ class PrimaryFilledButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialButton(
       onPressed: onTap,
-      color: AppColors.primaryColor,
+      color: AppColors.purpleRoyal,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(10),
         child: Text(
           text,
           style: Styles.tsWhiteRegular18,

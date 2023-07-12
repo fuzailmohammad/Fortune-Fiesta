@@ -16,4 +16,17 @@ class Styles {
     fontWeight: FontWeight.w400,
     fontSize: 18.0,
   );
+
+  static const tsGoldenBold18 = TextStyle(
+    color: AppColors.gradientThree,
+    fontWeight: FontWeight.w500,
+    fontSize: 22.0,
+  );
+
+  static const tsWhiteRegular16 = TextStyle(
+    color: AppColors.white,
+    fontWeight: FontWeight.w400,
+    fontSize: 16,
+  );
+
 }

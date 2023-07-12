@@ -1,5 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:fortune_fiesta/app/theme/app_colors.dart';
+import 'package:fortune_fiesta/utils/helper/custom_snackbar.dart';
+
 import 'package:fortune_fiesta/app/data/models/response/error_response.dart';
 import 'package:fortune_fiesta/app/data/values/strings.dart';
 
@@ -35,6 +38,12 @@ class HandleError {
   HandleError._privateConstructor();
 
   static handleError(APIException? error) {
-    Get.rawSnackbar(message: error?.message ?? ErrorMessages.networkGeneral);
+    showCustomSnackbar(Strings.error,
+        error?.message ?? ErrorMessages.networkGeneral, Colors.redAccent);
+  }
+
+  static void showError(String? error) {
+    showCustomSnackbar(Strings.alert, error ?? ErrorMessages.networkGeneral,
+        AppColors.primaryColor);
   }
 }
