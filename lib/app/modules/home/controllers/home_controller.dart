@@ -30,6 +30,8 @@ class HomeController extends GetxController {
   int pageTwo = 0;
   int pageThree = 0;
 
+  int counter = 0;
+
   final _pinListOne = RxList<PinList>([]);
   final _pinListTwo = RxList<PinList>([]);
   final _pinListThree = RxList<PinList>([]);
@@ -135,7 +137,6 @@ class HomeController extends GetxController {
 
   Future<void> spinningLogic() async {
     int totalItems = 10;
-    int counter = 0;
     upperSliderTimer = Timer.periodic(periodicSpinDuration, (timer) {
       scrollControl(scrollWheelOneController, counter);
       scrollControl(scrollWheelTwoController, counter);
@@ -156,7 +157,7 @@ class HomeController extends GetxController {
   scoreLogic() {
     int multiplier = 0;
     int grandTotal = firstScore + secondScore + thirdScore;
-    if (firstScore == secondScore && firstScore == thirdScore) {
+    if (firstScore == secondScore && secondScore == thirdScore) {
       multiplier = equalScoreCalculation(grandTotal);
       tempScore.value = tempScore.value + (grandTotal * multiplier);
     } else if (firstScore == secondScore ||
