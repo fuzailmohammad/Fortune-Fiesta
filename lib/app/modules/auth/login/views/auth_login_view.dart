@@ -6,6 +6,8 @@ import 'package:fortune_fiesta/widgets/buttons/primary_filled_button.dart';
 import 'package:fortune_fiesta/widgets/text_field/custom_text_field.dart';
 
 class AuthLoginView extends GetView<AuthLoginController> {
+  const AuthLoginView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +25,7 @@ class AuthLoginView extends GetView<AuthLoginController> {
                   maxLength: 10,
                   inputType: TextInputType.number,
                 ),
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 PrimaryFilledButton(
                   text: Strings.getOTP,
                   onTap: controller.sendOTP,

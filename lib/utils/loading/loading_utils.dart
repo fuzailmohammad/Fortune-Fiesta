@@ -11,7 +11,7 @@ class LoadingUtils {
           onWillPop: () {
             return Future.value(false);
           },
-          child: Center(child: CircularProgressIndicator()),
+          child: const Center(child: CircularProgressIndicator()),
         ),
         barrierDismissible: false,
       );

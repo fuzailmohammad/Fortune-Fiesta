@@ -27,7 +27,7 @@ class HomeView extends GetView<HomeController> {
       child: Scaffold(
         backgroundColor: AppColors.white.withOpacity(0.8),
         appBar: AppBar(
-          title: Text('Fortune Fiesta'),
+          title: const Text('Fortune Fiesta'),
           centerTitle: true,
           actions: [
             Padding(

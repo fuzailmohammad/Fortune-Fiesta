@@ -22,12 +22,12 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['phone'] = this.phone;
-    data['email'] = this.email;
-    data['address'] = this.address;
-    data['jwtToken'] = this.jwtToken;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['phone'] = phone;
+    data['email'] = email;
+    data['address'] = address;
+    data['jwtToken'] = jwtToken;
     return data;
   }
 }

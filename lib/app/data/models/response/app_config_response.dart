@@ -5,14 +5,14 @@ class AppConfigResponse {
   AppConfigResponse({required this.data, required this.statusCode});
 
   AppConfigResponse.fromJson(Map<String, dynamic> json) {
-    this.data = AppConfig.fromJson(json['data']);
-    this.statusCode = json['statusCode'];
+    data = AppConfig.fromJson(json['data']);
+    statusCode = json['statusCode'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['data'] = this.data.toJson();
-    data['statusCode'] = this.statusCode;
+    data['statusCode'] = statusCode;
     return data;
   }
 }
@@ -27,8 +27,8 @@ class AppConfig {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['config'] = this.config;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['config'] = config;
     return data;
   }
 }

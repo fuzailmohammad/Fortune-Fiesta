@@ -4,12 +4,12 @@ class SendOTPRequest {
   SendOTPRequest({required this.phone});
 
   SendOTPRequest.fromJson(Map<String, dynamic> json) {
-    this.phone = json['phone'];
+    phone = json['phone'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['phone'] = this.phone;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['phone'] = phone;
     return data;
   }
 }
@@ -21,14 +21,14 @@ class VerifyOTPRequest {
   VerifyOTPRequest({required this.phone, required this.otp});
 
   VerifyOTPRequest.fromJson(Map<String, dynamic> json) {
-    this.phone = json['phone'];
-    this.otp = json['otp'];
+    phone = json['phone'];
+    otp = json['otp'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['phone'] = this.phone;
-    data['otp'] = this.otp;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['phone'] = phone;
+    data['otp'] = otp;
     return data;
   }
 }
@@ -45,16 +45,16 @@ class SignUpRequest {
   });
 
   SignUpRequest.fromJson(Map<String, dynamic> json) {
-    this.name = json['name'];
-    this.phone = json['phone'];
-    this.email = json['email'];
+    name = json['name'];
+    phone = json['phone'];
+    email = json['email'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['name'] = this.name;
-    data['phone'] = this.phone;
-    data['email'] = this.email;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['phone'] = phone;
+    data['email'] = email;
     return data;
   }
 }

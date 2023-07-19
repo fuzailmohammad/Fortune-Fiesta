@@ -42,10 +42,6 @@ class HomeController extends GetxController {
 
   List<PinList> get pinListThree => _pinListThree;
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   @override
   void onReady() {

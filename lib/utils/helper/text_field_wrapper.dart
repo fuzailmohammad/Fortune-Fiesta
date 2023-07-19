@@ -4,15 +4,15 @@ import 'package:get/get.dart';
 class TextFieldWrapper {
   final _controller = TextEditingController().obs;
 
-  TextEditingController get controller => this._controller.value;
+  TextEditingController get controller => _controller.value;
 
-  set controller(TextEditingController value) => this._controller.value = value;
+  set controller(TextEditingController value) => _controller.value = value;
 
   final RxString _errorText = RxString("");
 
-  String get errorText => this._errorText.value;
+  String get errorText => _errorText.value;
 
-  set errorText(String value) => this._errorText.value = value;
+  set errorText(String value) => _errorText.value = value;
 
   TextFieldWrapper() {
     controller = TextEditingController();

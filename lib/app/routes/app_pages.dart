@@ -16,27 +16,27 @@ class AppPages {
   static final pages = [
     GetPage(
       name: Routes.SPLASH,
-      page: () => SplashView(),
+      page: () => const SplashView(),
       binding: SplashBinding(),
     ),
     GetPage(
       name: Routes.AUTH_LOGIN,
-      page: () => AuthLoginView(),
+      page: () => const AuthLoginView(),
       binding: AuthLoginBinding(),
     ),
     GetPage(
       name: Routes.AUTH_VERIFY_OTP,
-      page: () => AuthVerifyOtpView(),
+      page: () => const AuthVerifyOtpView(),
       binding: AuthVerifyOtpBinding(),
     ),
     GetPage(
       name: Routes.AUTH_SIGNUP,
-      page: () => AuthSignupView(),
+      page: () => const AuthSignupView(),
       binding: AuthSignupBinding(),
     ),
     GetPage(
       name: Routes.HOME,
-      page: () => HomeView(),
+      page: () => const HomeView(),
       binding: HomeBinding(),
     ),
   ];
