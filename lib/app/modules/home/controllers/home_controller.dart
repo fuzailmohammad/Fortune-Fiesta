@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fortune_fiesta/app/data/values/images.dart';
 import 'package:fortune_fiesta/app/data/values/strings.dart';
+import 'package:fortune_fiesta/app/routes/app_pages.dart';
 import 'package:fortune_fiesta/utils/helper/exception_handler.dart';
 import 'package:get/get.dart';
 
@@ -170,7 +171,7 @@ class HomeController extends GetxController {
   }
 
   debugPrintF() {
-    scoreLogic();
+Get.toNamed(Routes.GALLERY);
   }
 
   int equalScoreCalculation(int total) {

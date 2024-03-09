@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:fortune_fiesta/app/data/values/images.dart';
@@ -25,7 +26,7 @@ class HomeView extends GetView<HomeController> {
               ),
               fit: BoxFit.cover)),
       child: Scaffold(
-        backgroundColor: AppColors.white.withOpacity(0.8),
+        backgroundColor: Colors.transparent,
         appBar: AppBar(
           title: const Text('Fortune Fiesta'),
           centerTitle: true,
@@ -58,104 +59,107 @@ class HomeView extends GetView<HomeController> {
             )
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Obx(
-                () => Container(
-                  height: Get.width - 100,
-                  width: Get.width,
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    gradient: LinearGradient(
-                      colors: const [
-                        AppColors.gradientOne,
-                        AppColors.gradientTwo,
-                        AppColors.gradientThree,
-                        AppColors.gradientFour,
-                        AppColors.gradientFive
-                      ],
-                      transform: GradientRotation(
-                          controller.rotationNumber.value * pi / 180),
-                    ),
-                  ),
-                  child: Container(
+        body: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Obx(
+                  () => Container(
+                    height: Get.width - 100,
                     width: Get.width,
+                    padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      gradient: const LinearGradient(
-                          colors: [
-                            AppColors.goldenMachineOne,
-                            AppColors.goldenMachineTwo,
-                            AppColors.goldenMachineThree,
-                            AppColors.goldenMachineTwo,
-                            AppColors.goldenMachineOne,
-                          ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter),
+                      gradient: LinearGradient(
+                        colors: const [
+                          AppColors.gradientOne,
+                          AppColors.gradientTwo,
+                          AppColors.gradientThree,
+                          AppColors.gradientFour,
+                          AppColors.gradientFive
+                        ],
+                        transform: GradientRotation(
+                            controller.rotationNumber.value * pi / 180),
+                      ),
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Obx(
-                          () => PinScrollWidget(
-                            onSelectedItemChanged: (int value) {
-                              controller.pageOne = value;
-                              controller.firstScore = controller.pinListOne[value].value;
-                            },
-                            controller: controller.scrollWheelOneController,
-                            childCount: controller.pinListOne.length,
-                            builder: (BuildContext context, int index) {
-                              return ImageBox(
-                                image: controller.pinListOne[index].imageName,
-                              );
-                            },
+                    child: Container(
+                      width: Get.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        gradient: const LinearGradient(
+                            colors: [
+                              AppColors.goldenMachineOne,
+                              AppColors.goldenMachineTwo,
+                              AppColors.goldenMachineThree,
+                              AppColors.goldenMachineTwo,
+                              AppColors.goldenMachineOne,
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Obx(
+                            () => PinScrollWidget(
+                              onSelectedItemChanged: (int value) {
+                                controller.pageOne = value;
+                                controller.firstScore = controller.pinListOne[value].value;
+                              },
+                              controller: controller.scrollWheelOneController,
+                              childCount: controller.pinListOne.length,
+                              builder: (BuildContext context, int index) {
+                                return ImageBox(
+                                  image: controller.pinListOne[index].imageName,
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                        Obx(
-                          () => PinScrollWidget(
-                            onSelectedItemChanged: (int value) {
-                              controller.secondScore = controller.pinListTwo[value].value;
-                              controller.pageTwo = value;
-                            },
-                            controller: controller.scrollWheelTwoController,
-                            childCount: controller.pinListTwo.length,
-                            builder: (BuildContext context, int index) {
-                              return ImageBox(
-                                image: controller.pinListTwo[index].imageName,
-                              );
-                            },
+                          Obx(
+                            () => PinScrollWidget(
+                              onSelectedItemChanged: (int value) {
+                                controller.secondScore = controller.pinListTwo[value].value;
+                                controller.pageTwo = value;
+                              },
+                              controller: controller.scrollWheelTwoController,
+                              childCount: controller.pinListTwo.length,
+                              builder: (BuildContext context, int index) {
+                                return ImageBox(
+                                  image: controller.pinListTwo[index].imageName,
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                        Obx(
-                          () => PinScrollWidget(
-                            onSelectedItemChanged: (int value) {
-                              controller.thirdScore = controller.pinListThree[value].value;
-                              controller.pageThree = value;
-                            },
-                            controller: controller.scrollWheelThreeController,
-                            childCount: controller.pinListThree.length,
-                            builder: (BuildContext context, int index) {
-                              return ImageBox(
-                                image: controller.pinListThree[index].imageName,
-                              );
-                            },
+                          Obx(
+                            () => PinScrollWidget(
+                              onSelectedItemChanged: (int value) {
+                                controller.thirdScore = controller.pinListThree[value].value;
+                                controller.pageThree = value;
+                              },
+                              controller: controller.scrollWheelThreeController,
+                              childCount: controller.pinListThree.length,
+                              builder: (BuildContext context, int index) {
+                                return ImageBox(
+                                  image: controller.pinListThree[index].imageName,
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              PrimaryFilledButton(
-                  text: Strings.spin, onTap: controller.spinWheel),
-              // PrimaryFilledButton(
-              //     text: Strings.spin, onTap: controller.debugPrintF)
-            ],
+                PrimaryFilledButton(
+                    text: Strings.spin, onTap: controller.spinWheel),
+                PrimaryFilledButton(
+                    text: Strings.spin, onTap: controller.debugPrintF)
+              ],
+            ),
           ),
         ),
       ),

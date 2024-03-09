@@ -1,14 +1,17 @@
 import 'package:get/get.dart';
-import 'package:fortune_fiesta/app/modules/auth/login/bindings/auth_login_binding.dart';
-import 'package:fortune_fiesta/app/modules/auth/login/views/auth_login_view.dart';
-import 'package:fortune_fiesta/app/modules/auth/signup/bindings/auth_signup_binding.dart';
-import 'package:fortune_fiesta/app/modules/auth/signup/views/auth_signup_view.dart';
-import 'package:fortune_fiesta/app/modules/auth/verify-otp/bindings/auth_verify_otp_binding.dart';
-import 'package:fortune_fiesta/app/modules/auth/verify-otp/views/auth_verify_otp_view.dart';
-import 'package:fortune_fiesta/app/modules/home/bindings/home_binding.dart';
-import 'package:fortune_fiesta/app/modules/home/views/home_view.dart';
-import 'package:fortune_fiesta/app/modules/splash/bindings/splash_binding.dart';
-import 'package:fortune_fiesta/app/modules/splash/views/splash_view.dart';
+
+import '../modules/auth/login/bindings/auth_login_binding.dart';
+import '../modules/auth/login/views/auth_login_view.dart';
+import '../modules/auth/signup/bindings/auth_signup_binding.dart';
+import '../modules/auth/signup/views/auth_signup_view.dart';
+import '../modules/auth/verify-otp/bindings/auth_verify_otp_binding.dart';
+import '../modules/auth/verify-otp/views/auth_verify_otp_view.dart';
+import '../modules/gallery/bindings/gallery_binding.dart';
+import '../modules/gallery/views/gallery_view.dart';
+import '../modules/home/bindings/home_binding.dart';
+import '../modules/home/views/home_view.dart';
+import '../modules/splash/bindings/splash_binding.dart';
+import '../modules/splash/views/splash_view.dart';
 
 part 'app_routes.dart';
 
@@ -38,6 +41,11 @@ class AppPages {
       name: Routes.HOME,
       page: () => const HomeView(),
       binding: HomeBinding(),
+    ),
+    GetPage(
+      name: Routes.GALLERY,
+      page: () => const GalleryView(),
+      binding: GalleryBinding(),
     ),
   ];
 }
