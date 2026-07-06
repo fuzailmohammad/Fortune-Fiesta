@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:fortune_fiesta/app/data/models/dto/response.dart';
 import 'package:fortune_fiesta/app/data/values/strings.dart';
 import 'package:fortune_fiesta/app/theme/app_colors.dart';
 import 'package:fortune_fiesta/app/theme/styles.dart';
 import 'package:fortune_fiesta/widgets/buttons/primary_filled_button.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ShimmerWidget<D> extends StatelessWidget {
   final Widget? error;
@@ -13,7 +13,8 @@ class ShimmerWidget<D> extends StatelessWidget {
   final DataWrapper<D> wrapper;
   final Widget Function(D data) child;
 
-  const ShimmerWidget({super.key, 
+  const ShimmerWidget({
+    super.key,
     required this.child,
     required this.shimmer,
     required this.wrapper,

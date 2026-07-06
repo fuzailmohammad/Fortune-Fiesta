@@ -11,23 +11,25 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.6
+  cupertino_icons: ^1.0.9
   
   # GetX
-  get: ^4.6.6
+  get: ^4.7.3
   get_storage: ^2.1.1
+  path_provider: ^2.1.6
 
   # Network
-  dio: ^5.4.1
+  dio: ^5.10.0
 
   # UI
   shimmer: ^3.0.0
+  google_fonts: ^8.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.0
+  flutter_lints: ^6.0.0
 
 flutter:
   uses-material-design: true

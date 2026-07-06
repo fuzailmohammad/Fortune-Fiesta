@@ -1,6 +1,6 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:fortune_fiesta/app/core/logger/app_logger.dart';
 import 'package:fortune_fiesta/app/data/values/constants.dart';
 import 'package:fortune_fiesta/app/data/values/env.dart';
 import 'package:fortune_fiesta/utils/helper/exception_handler.dart';
@@ -14,8 +14,8 @@ class NetworkRequester {
 
   void prepareRequest() {
     BaseOptions dioOptions = BaseOptions(
-      connectTimeout: const Duration(milliseconds: Timeouts.CONNECT_TIMEOUT),
-      receiveTimeout: const Duration(milliseconds: Timeouts.RECEIVE_TIMEOUT),
+      connectTimeout: const Duration(milliseconds: Timeouts.connectTimeout),
+      receiveTimeout: const Duration(milliseconds: Timeouts.receiveTimeout),
       baseUrl: Env.baseURL,
       contentType: Headers.formUrlEncodedContentType,
       responseType: ResponseType.json,
@@ -26,18 +26,31 @@ class NetworkRequester {
 
     _dio.interceptors.clear();
 
-    _dio.interceptors.add(LogInterceptor(
-      error: true,
-      request: true,
-      requestBody: true,
-      requestHeader: true,
-      responseBody: true,
-      responseHeader: true,
-      logPrint: _printLog,
-    ));
+    if (!kReleaseMode) {
+      _dio.interceptors.add(LogInterceptor(
+        error: true,
+        request: true,
+        requestBody: true,
+        requestHeader: true,
+        responseBody: true,
+        responseHeader: true,
+        logPrint: _printLog,
+      ));
+    } else {
+      _dio.interceptors.add(LogInterceptor(
+        error: true,
+        request: false,
+        requestBody: false,
+        requestHeader: false,
+        responseBody: false,
+        responseHeader: false,
+        logPrint: _printLog,
+      ));
+    }
   }
 
-  _printLog(Object object) => log(object.toString());
+  void _printLog(Object object) =>
+      AppLogger.d(object.toString(), tag: 'NetworkRequester');
 
   Future<dynamic> get({
     required String path,
