@@ -22,6 +22,9 @@ class PlayerMoodController extends GetxService {
   final visualEnergyMultiplier = 1.0.obs;
   final uiBrightnessBoost = 0.0.obs;
 
+  bool _userDismissedShortcuts = false;
+  bool _userDismissedBreakReminder = false;
+
   Timer? _sessionTimer;
 
   @override
@@ -46,7 +49,9 @@ class PlayerMoodController extends GetxService {
 
   void _evaluateSessionPacing() {
     // Check for Short Session (< 3 minutes with low activity)
-    if (sessionDurationSeconds.value < 180 && sessionSpins.value < 10) {
+    if (!_userDismissedShortcuts &&
+        sessionDurationSeconds.value < 180 &&
+        sessionSpins.value < 10) {
       if (currentMood.value != PlayerMoodState.hurriedShortSession) {
         currentMood.value = PlayerMoodState.hurriedShortSession;
         showShortSessionShortcuts.value = true;
@@ -56,7 +61,8 @@ class PlayerMoodController extends GetxService {
     }
 
     // Check for Long Session (> 25 minutes or > 150 spins)
-    if (sessionDurationSeconds.value >= 1500 || sessionSpins.value >= 150) {
+    if (!_userDismissedBreakReminder &&
+        (sessionDurationSeconds.value >= 1500 || sessionSpins.value >= 150)) {
       if (currentMood.value != PlayerMoodState.fatiguedLongSession) {
         currentMood.value = PlayerMoodState.fatiguedLongSession;
         showBreakReminder.value = true;
@@ -118,7 +124,13 @@ class PlayerMoodController extends GetxService {
   }
 
   void dismissBreakReminder() {
+    _userDismissedBreakReminder = true;
     showBreakReminder.value = false;
+  }
+
+  void dismissShortSessionShortcuts() {
+    _userDismissedShortcuts = true;
+    showShortSessionShortcuts.value = false;
   }
 
   void simulateStateForDemo(

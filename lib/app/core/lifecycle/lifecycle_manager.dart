@@ -16,7 +16,6 @@ class AppLifecycleManager extends GetxService with WidgetsBindingObserver {
 
   Future<AppLifecycleManager> init() async {
     WidgetsBinding.instance.addObserver(this);
-    AppLifecycleManager.to; // force bind
     AppLogger.i('AppLifecycleManager initialized and observing WidgetsBinding.', tag: 'LifecycleManager');
     return this;
   }

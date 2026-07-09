@@ -29,9 +29,9 @@ class PremiumHomeBinding extends Bindings {
     // Register controllers
     Get.lazyPut<PremiumHomeController>(() => PremiumHomeController());
     Get.lazyPut<AdController>(() => AdController());
-    Get.lazyPut<AudioController>(() => AudioController());
+    Get.put(AudioController(), permanent: true);
     Get.lazyPut<JuiceController>(() => JuiceController());
-    Get.lazyPut<SettingsController>(() => SettingsController());
+    Get.put(SettingsController(), permanent: true);
     Get.lazyPut<LiveOpsController>(() => LiveOpsController());
     Get.lazyPut<MissionController>(() => MissionController());
     Get.lazyPut<ProgressionController>(() => ProgressionController());

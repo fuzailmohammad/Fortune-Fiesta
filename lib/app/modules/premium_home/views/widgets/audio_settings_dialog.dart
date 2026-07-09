@@ -66,14 +66,46 @@ class AudioSettingsDialog extends StatelessWidget {
               ),
               const SizedBox(height: 18),
 
-              // Music Volume Slider
-              const Text(
-                'BACKGROUND MUSIC',
-                style: TextStyle(
-                    color: Colors.white30,
-                    fontSize: 9,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 0.5),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'CASIO BACKGROUND MUSIC',
+                    style: TextStyle(
+                        color: Colors.white30,
+                        fontSize: 9,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.5),
+                  ),
+                  GestureDetector(
+                    onTap: () => controller.toggleMusic(),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: s.musicVolume > 0 && !s.isMuted
+                            ? PremiumColors.premiumGold.withValues(alpha: 0.2)
+                            : Colors.white10,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: s.musicVolume > 0 && !s.isMuted
+                              ? PremiumColors.premiumGold
+                              : Colors.white24,
+                        ),
+                      ),
+                      child: Text(
+                        s.musicVolume > 0 && !s.isMuted ? 'ON' : 'OFF',
+                        style: TextStyle(
+                          color: s.musicVolume > 0 && !s.isMuted
+                              ? PremiumColors.premiumGold
+                              : Colors.white54,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               Row(
                 children: [

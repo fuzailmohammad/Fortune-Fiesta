@@ -92,11 +92,15 @@ class ContextualActionChip extends StatelessWidget {
           children: [
             Icon(icon, color: iconColor, size: 16),
             const SizedBox(width: 8),
-            Text(
-              text,
-              style: PremiumTypography.bodyLarge.copyWith(
-                fontSize: 13,
-                color: isHighlight ? PremiumColors.textWhite : PremiumColors.textLightGrey,
+            Flexible(
+              child: Text(
+                text,
+                style: PremiumTypography.bodyLarge.copyWith(
+                  fontSize: 13,
+                  color: isHighlight ? PremiumColors.textWhite : PremiumColors.textLightGrey,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             const SizedBox(width: 4),

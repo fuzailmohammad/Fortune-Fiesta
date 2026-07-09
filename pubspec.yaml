@@ -24,6 +24,7 @@ dependencies:
   # UI
   shimmer: ^3.0.0
   google_fonts: ^8.1.0
+  audioplayers: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -36,6 +37,9 @@ flutter:
   
   assets:
     - assets/images/
+    - assets/images/symbols/
+    - assets/images/backup/
+    - assets/audio/
     
   fonts:
     - family: lobster

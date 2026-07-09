@@ -258,6 +258,13 @@ class SettingsDashboardScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
+          _buildSwitchTile(
+            title: 'Casio Background Music',
+            subtitle: 'Continuously playing retro arcade synth loop',
+            value: s.musicVolume > 0 && !s.isMuted,
+            onChanged: (enabled) => audioController.toggleMusic(enabled),
+          ),
+          const SizedBox(height: 12),
           const Text('MUSIC VOLUME',
               style: TextStyle(
                   color: Colors.white30,

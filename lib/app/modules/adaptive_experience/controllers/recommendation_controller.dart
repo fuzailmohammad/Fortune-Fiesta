@@ -61,8 +61,12 @@ class RecommendationController extends GetxService {
     primaryRecommendation.value = list.first;
   }
 
+  bool _userDismissedRecommendation = false;
+
   void updateContextualState(
       {required int coinBalance, required bool hasFreeWheel}) {
+    if (_userDismissedRecommendation) return;
+
     // If balance is low, elevate Shop recommendation without forcing
     if (coinBalance < 5000) {
       final shopRec =
@@ -80,10 +84,15 @@ class RecommendationController extends GetxService {
   }
 
   void cycleNextRecommendation() {
-    if (activeRecommendations.isEmpty) return;
+    if (_userDismissedRecommendation || activeRecommendations.isEmpty) return;
     final currentIndex =
         activeRecommendations.indexOf(primaryRecommendation.value);
     final nextIndex = (currentIndex + 1) % activeRecommendations.length;
     primaryRecommendation.value = activeRecommendations[nextIndex];
+  }
+
+  void dismissPrimaryRecommendation() {
+    _userDismissedRecommendation = true;
+    primaryRecommendation.value = null;
   }
 }

@@ -4,9 +4,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../data/models/audio_model.dart';
 import '../services/reward_service.dart';
 import '../services/stats_service.dart';
 import '../services/storage_service.dart';
+import 'audio_controller.dart';
+import 'settings_controller.dart';
 
 class PremiumHomeController extends GetxController {
   final StorageService _storage = Get.find<StorageService>();
@@ -18,7 +21,9 @@ class PremiumHomeController extends GetxController {
 
   // State Variables
   final RxInt coins = 50000.obs; // Default starting coins
+  final RxInt currentBet = 100.obs; // Dynamic bet amount
   final RxBool isSpinning = false.obs;
+  final RxBool isReelsSpinning = false.obs;
   final RxList<int> reelTargetIndices = <int>[0, 0, 0].obs;
   final RxInt currentTab = 0.obs;
 
@@ -87,11 +92,59 @@ class PremiumHomeController extends GetxController {
     }
   }
 
-  // Spin Logic (UI triggers only, business rules mocked for UI demo)
+  int _pendingWinAmount = 0;
+  bool _pendingIsWin = false;
+  bool _pendingAllMatch = false;
+
+  // Bet Management
+  void increaseBet([int step = 100]) {
+    if (isSpinning.value) return;
+    if (coins.value <= 100) {
+      currentBet.value = coins.value > 0 ? coins.value : 100;
+      return;
+    }
+    if (currentBet.value + step <= coins.value) {
+      currentBet.value += step;
+    } else {
+      currentBet.value = coins.value;
+    }
+    _playBetSound();
+  }
+
+  void decreaseBet([int step = 100]) {
+    if (isSpinning.value) return;
+    if (currentBet.value - step >= 100) {
+      currentBet.value -= step;
+    } else {
+      currentBet.value = 100;
+    }
+    _playBetSound();
+  }
+
+  void setMaxBet() {
+    if (isSpinning.value) return;
+    if (coins.value >= 100) {
+      currentBet.value = coins.value;
+    } else if (coins.value > 0) {
+      currentBet.value = coins.value;
+    }
+    _playBetSound();
+  }
+
+  void _playBetSound() {
+    if (Get.isRegistered<AudioController>()) {
+      final audio = Get.find<AudioController>();
+      audio.triggerHaptic(HapticProfile.light);
+      audio.playEvent(AudioEvent.buttonPress);
+    }
+  }
+
+  // Spin Logic
   Future<void> spin() async {
     if (isSpinning.value) return;
 
-    if (coins.value < spinCost) {
+    final int activeBet = currentBet.value;
+    if (coins.value < activeBet) {
       Get.snackbar(
         'Out of Coins!',
         'Wait for the daily reward or spin again later!',
@@ -103,9 +156,14 @@ class PremiumHomeController extends GetxController {
     }
 
     // Deduct spin cost
-    coins.value -= spinCost;
+    coins.value -= activeBet;
     await _storage.write(_coinKey, coins.value);
     isSpinning.value = true;
+    isReelsSpinning.value = true;
+
+    if (Get.isRegistered<AudioController>()) {
+      Get.find<AudioController>().playEvent(AudioEvent.spinStart);
+    }
 
     // Generate random final indices (0-9 corresponding to images 0-9)
     final random = Random();
@@ -114,11 +172,6 @@ class PremiumHomeController extends GetxController {
     final target3 = random.nextInt(10);
 
     reelTargetIndices.value = [target1, target2, target3];
-
-    // Mock spin duration (e.g. 2.5 seconds)
-    await Future.delayed(const Duration(milliseconds: 2500));
-
-    isSpinning.value = false;
 
     // Mock winning rules:
     // If 3 symbols match -> Big Win (1000 coins)
@@ -131,16 +184,55 @@ class PremiumHomeController extends GetxController {
     bool isWin = false;
 
     if (allMatch) {
-      winAmount = 1000;
+      winAmount = currentBet.value * 10;
       isWin = true;
     } else if (doubleMatch) {
-      winAmount = 250;
+      winAmount = (currentBet.value * 2.5).toInt();
       isWin = true;
     }
 
-    if (isWin) {
+    _pendingWinAmount = winAmount;
+    _pendingIsWin = isWin;
+    _pendingAllMatch = allMatch;
+
+    final bool isTurbo = Get.isRegistered<SettingsController>() &&
+        Get.find<SettingsController>().settings.value.gameplay.turboSpin;
+    await Future.delayed(Duration(milliseconds: isTurbo ? 750 : 2500));
+
+    // Signal reels to start deceleration (isSpinning remains true to keep SPIN button disabled)
+    isReelsSpinning.value = false;
+
+    // Safety fallback: ensure spin completes even if screen navigated away
+    Future.delayed(const Duration(milliseconds: 3000), () {
+      if (isSpinning.value) {
+        onReelsStopped();
+      }
+    });
+  }
+
+  // Called after the reels finish their stopping animation
+  Future<void> onReelsStopped() async {
+    if (!isSpinning.value) return;
+
+    isSpinning.value = false;
+    isReelsSpinning.value = false;
+
+    final int winAmount = _pendingWinAmount;
+    final bool allMatch = _pendingAllMatch;
+    final bool isWin = _pendingIsWin;
+
+    // Reset pending state immediately
+    _pendingWinAmount = 0;
+    _pendingIsWin = false;
+    _pendingAllMatch = false;
+
+    if (isWin && winAmount > 0) {
       coins.value += winAmount;
       await _storage.write(_coinKey, coins.value);
+
+      if (Get.isRegistered<AudioController>()) {
+        Get.find<AudioController>().playEvent(AudioEvent.winnerSpecial);
+      }
 
       Get.snackbar(
         allMatch ? 'BIG WIN!' : 'WINNER!',
@@ -152,10 +244,26 @@ class PremiumHomeController extends GetxController {
       );
     }
 
-    // Track gameplay statistics
+    // Track gameplay statistics after reel stop
     await _statsService.recordSpin(isWin, winAmount);
     _updateStatsState();
+
+    // Auto Spin execution
+    if (Get.isRegistered<SettingsController>()) {
+      final settings = Get.find<SettingsController>().settings.value;
+      if (settings.gameplay.autoSpin && coins.value >= currentBet.value) {
+        Future.delayed(
+            Duration(milliseconds: settings.gameplay.turboSpin ? 600 : 1400),
+            () {
+          if (!isSpinning.value &&
+              Get.find<SettingsController>().settings.value.gameplay.autoSpin) {
+            spin();
+          }
+        });
+      }
+    }
   }
+
 
   // Claim Daily Reward
   Future<void> claimDailyReward() async {

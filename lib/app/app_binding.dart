@@ -18,11 +18,18 @@ import 'package:fortune_fiesta/app/modules/growth_hub/controllers/cosmetic_manag
 import 'package:fortune_fiesta/app/modules/growth_hub/controllers/growth_manager.dart';
 import 'package:fortune_fiesta/app/modules/growth_hub/controllers/share_manager.dart';
 import 'package:fortune_fiesta/app/modules/growth_hub/controllers/surprise_manager.dart';
+import 'package:fortune_fiesta/app/modules/premium_home/controllers/settings_controller.dart';
+import 'package:fortune_fiesta/app/modules/premium_home/services/storage_service.dart';
 import 'package:get/get.dart';
 
 class AppBinding extends Bindings {
   @override
   void dependencies() {
+    // 0. Storage & Global Settings
+    final storage = Get.put(StorageService(), permanent: true);
+    storage.init();
+    Get.put(SettingsController(), permanent: true);
+
     // 1. Core Production Infrastructure
     Get.putAsync(() => CrashService().init(), permanent: true);
     Get.putAsync(() => AnalyticsService().init(), permanent: true);

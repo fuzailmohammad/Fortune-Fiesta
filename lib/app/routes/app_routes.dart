@@ -7,4 +7,7 @@ abstract class Routes {
   static const authSignup = '/auth/signup';
   static const home = '/home';
   static const premiumHome = '/premium_home';
+  static const retention = '/retention';
+  static const shop = '/shop';
+  static const growthHub = '/growth_hub';
 }

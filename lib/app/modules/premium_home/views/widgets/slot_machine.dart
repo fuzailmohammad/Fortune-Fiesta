@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import '../../../../data/models/audio_model.dart';
 import '../../controllers/audio_controller.dart';
 import '../../controllers/premium_home_controller.dart';
+import '../../controllers/settings_controller.dart';
 
 // Reel Spin Lifecycle States
 enum SpinState {
@@ -71,7 +72,7 @@ class _SlotMachineState extends State<SlotMachine>
 
     if (Get.isRegistered<PremiumHomeController>()) {
       final controller = Get.find<PremiumHomeController>();
-      _spinWorker = ever<bool>(controller.isSpinning, _onSpinStateChanged);
+      _spinWorker = ever<bool>(controller.isReelsSpinning, _onSpinStateChanged);
     }
   }
 
@@ -111,6 +112,29 @@ class _SlotMachineState extends State<SlotMachine>
     } catch (_) {}
   }
 
+  void _onReelStopped() {
+    if (!mounted) return;
+    setState(() {
+      _lockedReelsCount = math.min(3, _lockedReelsCount + 1);
+    });
+    _playReelStopFeedback();
+    if (_lockedReelsCount == 3) {
+      if (Get.isRegistered<PremiumHomeController>()) {
+        Get.find<PremiumHomeController>().onReelsStopped();
+      }
+    }
+  }
+
+  void _playReelStopFeedback() {
+    try {
+      if (Get.isRegistered<AudioController>()) {
+        final audio = Get.find<AudioController>();
+        audio.triggerHaptic(HapticProfile.light);
+        audio.playEvent(AudioEvent.reelStop);
+      }
+    } catch (_) {}
+  }
+
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<PremiumHomeController>();
@@ -120,6 +144,7 @@ class _SlotMachineState extends State<SlotMachine>
         margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         child: Obx(() {
           final bool isSpinning = controller.isSpinning.value;
+          final bool isReelsSpinning = controller.isReelsSpinning.value;
 
           // Evaluate winning combinations for visual highlighting
           final target1 = controller.reelTargetIndices[0];
@@ -165,17 +190,9 @@ class _SlotMachineState extends State<SlotMachine>
                           child: SlotReelColumn(
                             reelIndex: 0,
                             targetIndex: target1,
-                            isSpinning: isSpinning,
+                            isSpinning: isReelsSpinning,
                             isWinning: r1Win,
-                            onStopped: () {
-                              if (mounted) {
-                                setState(() {
-                                  _lockedReelsCount =
-                                      math.min(3, _lockedReelsCount + 1);
-                                });
-                                _playReelStopFeedback();
-                              }
-                            },
+                            onStopped: _onReelStopped,
                           ),
                         ),
                         const VerticalDivider(
@@ -188,17 +205,9 @@ class _SlotMachineState extends State<SlotMachine>
                           child: SlotReelColumn(
                             reelIndex: 1,
                             targetIndex: target2,
-                            isSpinning: isSpinning,
+                            isSpinning: isReelsSpinning,
                             isWinning: r2Win,
-                            onStopped: () {
-                              if (mounted) {
-                                setState(() {
-                                  _lockedReelsCount =
-                                      math.min(3, _lockedReelsCount + 1);
-                                });
-                                _playReelStopFeedback();
-                              }
-                            },
+                            onStopped: _onReelStopped,
                           ),
                         ),
                         const VerticalDivider(
@@ -211,17 +220,9 @@ class _SlotMachineState extends State<SlotMachine>
                           child: SlotReelColumn(
                             reelIndex: 2,
                             targetIndex: target3,
-                            isSpinning: isSpinning,
+                            isSpinning: isReelsSpinning,
                             isWinning: r3Win,
-                            onStopped: () {
-                              if (mounted) {
-                                setState(() {
-                                  _lockedReelsCount =
-                                      math.min(3, _lockedReelsCount + 1);
-                                });
-                                _playReelStopFeedback();
-                              }
-                            },
+                            onStopped: _onReelStopped,
                           ),
                         ),
                       ],
@@ -239,16 +240,8 @@ class _SlotMachineState extends State<SlotMachine>
     );
   }
 
-  void _playReelStopFeedback() {
-    try {
-      if (Get.isRegistered<AudioController>()) {
-        final audio = Get.find<AudioController>();
-        audio.triggerHaptic(HapticProfile.veryLight);
-        audio.playEvent(AudioEvent.reelStop);
-      }
-    } catch (_) {}
-  }
 }
+
 
 class SlotMachineFrame extends StatelessWidget {
   final Widget child;
@@ -792,8 +785,10 @@ class _SlotReelColumnState extends State<SlotReelColumn>
         final bool isCenterPayline = symbolIndex == widget.targetIndex;
         final bool isFocused = !isRest || isCenterPayline;
 
-        // Symbol celebration highlights only if it is the center payline item and reel is winning
-        final bool isWinningSymbol = isCenterPayline && widget.isWinning;
+        final bool showWinningLine = !Get.isRegistered<SettingsController>() ||
+            Get.find<SettingsController>().settings.value.gameplay.showWinningLine;
+        final bool isWinningSymbol =
+            isCenterPayline && widget.isWinning && showWinningLine;
 
         return Center(
           child: SlotSymbolTile(

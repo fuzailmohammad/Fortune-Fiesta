@@ -30,6 +30,31 @@ class SettingsController extends GetxController {
     if (savedSettings != null) {
       settings.value = SettingsModel.fromJson(savedSettings);
     }
+    _syncSideEffects();
+  }
+
+  void _syncSideEffects() {
+    final gr = settings.value.graphics;
+    final acc = settings.value.accessibility;
+
+    if (acc.reduceMotion) {
+      VfxController.instance.quality = VfxQuality.low;
+    } else {
+      switch (gr.quality) {
+        case GraphicsQuality.low:
+          VfxController.instance.quality = VfxQuality.low;
+          break;
+        case GraphicsQuality.medium:
+          VfxController.instance.quality = VfxQuality.medium;
+          break;
+        case GraphicsQuality.high:
+          VfxController.instance.quality = VfxQuality.high;
+          break;
+        case GraphicsQuality.ultra:
+          VfxController.instance.quality = VfxQuality.ultra;
+          break;
+      }
+    }
   }
 
   Future<void> saveSettings() async {
@@ -44,11 +69,13 @@ class SettingsController extends GetxController {
   void updateGraphics(GraphicsSettings newGraphics) {
     settings.value = settings.value.copyWith(graphics: newGraphics);
     saveSettings();
+    _syncSideEffects();
   }
 
   void updateAccessibility(AccessibilitySettings newAccessibility) {
     settings.value = settings.value.copyWith(accessibility: newAccessibility);
     saveSettings();
+    _syncSideEffects();
   }
 
   void updateNotifications(NotificationSettings newNotifications) {

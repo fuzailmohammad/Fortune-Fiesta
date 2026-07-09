@@ -12,6 +12,9 @@ import '../modules/premium_home/bindings/premium_home_binding.dart';
 import '../modules/premium_home/views/premium_home_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
+import '../modules/premium_home/views/retention_dashboard_screen.dart';
+import '../modules/premium_home/views/shop_dashboard_screen.dart';
+import '../modules/adaptive_experience/views/player_journey_timeline_screen.dart';
 
 part 'app_routes.dart';
 
@@ -46,6 +49,18 @@ class AppPages {
       name: Routes.premiumHome,
       page: () => const PremiumHomeView(),
       binding: PremiumHomeBinding(),
+    ),
+    GetPage(
+      name: Routes.retention,
+      page: () => const RetentionDashboardScreen(),
+    ),
+    GetPage(
+      name: Routes.shop,
+      page: () => const ShopDashboardScreen(),
+    ),
+    GetPage(
+      name: Routes.growthHub,
+      page: () => const PlayerJourneyTimelineScreen(),
     ),
   ];
 }

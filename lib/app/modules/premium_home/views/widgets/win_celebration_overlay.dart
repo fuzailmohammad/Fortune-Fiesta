@@ -2,6 +2,10 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:fortune_fiesta/app/theme/premium_design_system.dart';
+import 'package:get/get.dart';
+
+import '../../../../data/models/audio_model.dart';
+import '../../controllers/audio_controller.dart';
 
 enum WinCelebrationTier {
   small,
@@ -40,6 +44,10 @@ class _WinCelebrationOverlayState extends State<WinCelebrationOverlay>
     _tier = widget.winAmount >= 1000
         ? WinCelebrationTier.big
         : WinCelebrationTier.small;
+
+    if (Get.isRegistered<AudioController>()) {
+      Get.find<AudioController>().playEvent(AudioEvent.winnerSpecial);
+    }
 
     // 1. Intro Banner Animation Controller
     _bannerController = AnimationController(
@@ -82,7 +90,8 @@ class _WinCelebrationOverlayState extends State<WinCelebrationOverlay>
         start: startPoint,
         end: endPoint,
         control: controlPoint,
-        delay: i * 0.025, // Staggered stream release
+        delay: i * 0.025,
+        // Staggered stream release
         speed: 0.8 + _random.nextDouble() * 0.4,
         size: 14 + _random.nextDouble() * 8,
         startRotation: _random.nextDouble() * math.pi * 2,
@@ -153,150 +162,154 @@ class _WinCelebrationOverlayState extends State<WinCelebrationOverlay>
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return Stack(
-      children: [
-        // 1. Interactive Tap-to-Skip Layer
-        Positioned.fill(
-          child: GestureDetector(
-            onTap: _skipCelebration,
-            behavior: HitTestBehavior.opaque,
-            child: const SizedBox.expand(),
-          ),
-        ),
-
-        // 2. High-Performance Particle custom painter layer
-        Positioned.fill(
-          child: IgnorePointer(
-            child: AnimatedBuilder(
-              animation: _physicsController,
-              builder: (context, child) {
-                return CustomPaint(
-                  painter: _CelebrationPhysicsPainter(
-                    coins: _coins,
-                    confetti: _confetti,
-                    progress: _physicsController.value,
-                    size: size,
-                  ),
-                );
-              },
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        children: [
+          // 1. Interactive Tap-to-Skip Layer
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: _skipCelebration,
+              behavior: HitTestBehavior.opaque,
+              child: const SizedBox.expand(),
             ),
           ),
-        ),
 
-        // 3. Gold Banners and Scores (intro animated)
-        Align(
-          alignment: Alignment.center,
-          child: IgnorePointer(
-            child: AnimatedBuilder(
-              animation: _bannerController,
-              builder: (context, child) {
-                final double opacity = CurvedAnimation(
-                  parent: _bannerController,
-                  curve: const Interval(0.0, 0.4, curve: Curves.easeIn),
-                ).value;
+          // 2. High-Performance Particle custom painter layer
+          Positioned.fill(
+            child: IgnorePointer(
+              child: AnimatedBuilder(
+                animation: _physicsController,
+                builder: (context, child) {
+                  return CustomPaint(
+                    painter: _CelebrationPhysicsPainter(
+                      coins: _coins,
+                      confetti: _confetti,
+                      progress: _physicsController.value,
+                      size: size,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
 
-                final double scale = CurvedAnimation(
-                  parent: _bannerController,
-                  curve: const Interval(0.0, 0.6, curve: Curves.elasticOut),
-                ).value;
+          // 3. Gold Banners and Scores (intro animated)
+          Align(
+            alignment: Alignment.center,
+            child: IgnorePointer(
+              child: AnimatedBuilder(
+                animation: _bannerController,
+                builder: (context, child) {
+                  final double opacity = CurvedAnimation(
+                    parent: _bannerController,
+                    curve: const Interval(0.0, 0.4, curve: Curves.easeIn),
+                  ).value;
 
-                final double scoreOpacity = CurvedAnimation(
-                  parent: _bannerController,
-                  curve: const Interval(0.4, 0.8, curve: Curves.easeIn),
-                ).value;
+                  final double scale = CurvedAnimation(
+                    parent: _bannerController,
+                    curve: const Interval(0.0, 0.6, curve: Curves.elasticOut),
+                  ).value;
 
-                return Transform.scale(
-                  scale: scale,
-                  child: Opacity(
-                    opacity: opacity,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // Large Golden Win Banner
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 32, vertical: 12),
-                          decoration: BoxDecoration(
-                            gradient: PremiumGradients.gold,
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: Colors.white, width: 2.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: PremiumColors.premiumGold
-                                    .withValues(alpha: 0.5),
-                                blurRadius: 20,
-                                spreadRadius: 4,
-                              ),
-                            ],
-                          ),
-                          child: Text(
-                            _tier == WinCelebrationTier.big
-                                ? 'BIG WIN!'
-                                : 'WINNER!',
-                            style: PremiumTypography.numbersStyle.copyWith(
-                              fontSize:
-                                  _tier == WinCelebrationTier.big ? 28 : 22,
-                              color: PremiumColors.richBlack,
-                              fontWeight: FontWeight.w900,
-                              letterSpacing: 2.0,
-                            ),
-                          ),
-                        ),
+                  final double scoreOpacity = CurvedAnimation(
+                    parent: _bannerController,
+                    curve: const Interval(0.4, 0.8, curve: Curves.easeIn),
+                  ).value;
 
-                        const SizedBox(height: 12),
-
-                        // Score increment text
-                        Opacity(
-                          opacity: scoreOpacity,
-                          child: Text(
-                            '+${widget.winAmount}',
-                            style: PremiumTypography.numbersStyle.copyWith(
-                              fontSize: 36,
-                              color: PremiumColors.premiumGold,
-                              fontWeight: FontWeight.w900,
-                              shadows: [
-                                Shadow(
+                  return Transform.scale(
+                    scale: scale,
+                    child: Opacity(
+                      opacity: opacity,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Large Golden Win Banner
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 32, vertical: 12),
+                            decoration: BoxDecoration(
+                              gradient: PremiumGradients.gold,
+                              borderRadius: BorderRadius.circular(16),
+                              border:
+                                  Border.all(color: Colors.white, width: 2.0),
+                              boxShadow: [
+                                BoxShadow(
                                   color: PremiumColors.premiumGold
-                                      .withValues(alpha: 0.6),
-                                  blurRadius: 10,
+                                      .withValues(alpha: 0.5),
+                                  blurRadius: 20,
+                                  spreadRadius: 4,
                                 ),
                               ],
                             ),
+                            child: Text(
+                              _tier == WinCelebrationTier.big
+                                  ? 'BIG WIN!'
+                                  : 'WINNER!',
+                              style: PremiumTypography.numbersStyle.copyWith(
+                                fontSize:
+                                    _tier == WinCelebrationTier.big ? 28 : 22,
+                                color: PremiumColors.richBlack,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 2.0,
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
+
+                          const SizedBox(height: 12),
+
+                          // Score increment text
+                          Opacity(
+                            opacity: scoreOpacity,
+                            child: Text(
+                              '+${widget.winAmount}',
+                              style: PremiumTypography.numbersStyle.copyWith(
+                                fontSize: 36,
+                                color: PremiumColors.premiumGold,
+                                fontWeight: FontWeight.w900,
+                                shadows: [
+                                  Shadow(
+                                    color: PremiumColors.premiumGold
+                                        .withValues(alpha: 0.6),
+                                    blurRadius: 10,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
-        ),
 
-        // Skip banner hint (bottom of screen)
-        Positioned(
-          bottom: 40,
-          left: 0,
-          right: 0,
-          child: Align(
-            alignment: Alignment.center,
-            child: IgnorePointer(
-              child: Opacity(
-                opacity: 0.6,
-                child: Text(
-                  'TAP TO SKIP',
-                  style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.8),
-                    fontSize: 11,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.5,
+          // Skip banner hint (bottom of screen)
+          Positioned(
+            bottom: 40,
+            left: 0,
+            right: 0,
+            child: Align(
+              alignment: Alignment.center,
+              child: IgnorePointer(
+                child: Opacity(
+                  opacity: 0.6,
+                  child: Text(
+                    'TAP TO SKIP',
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.8),
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.5,
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

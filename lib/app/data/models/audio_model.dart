@@ -7,6 +7,7 @@ enum AudioEvent {
   winSmall,
   winBig,
   jackpot,
+  winnerSpecial,
 }
 
 enum HapticProfile {

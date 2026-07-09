@@ -30,11 +30,13 @@ class SpinSection extends StatelessWidget {
           final bool isSpinning = controller.isSpinning.value;
           final int coins = controller.coins.value;
 
+          final int bet = controller.currentBet.value;
+
           // Determine button state reactively
           SpinButtonState state = SpinButtonState.normal;
           if (isSpinning) {
             state = SpinButtonState.loading;
-          } else if (coins < 100) {
+          } else if (coins < bet) {
             state = SpinButtonState.insufficientCoins;
           }
 

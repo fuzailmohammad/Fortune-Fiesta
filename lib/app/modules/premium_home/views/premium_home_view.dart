@@ -20,6 +20,7 @@ import 'widgets/custom_app_bar.dart';
 import 'widgets/double_reward_dialog.dart';
 import 'widgets/slot_machine.dart';
 import 'widgets/spin_button.dart';
+import 'widgets/bet_control_bar.dart';
 import 'widgets/win_celebration_overlay.dart';
 
 class PremiumHomeView extends StatefulWidget {
@@ -198,7 +199,9 @@ class _PremiumHomeViewState extends State<PremiumHomeView> {
                 children: [
                   const Spacer(flex: 2),
                   const SlotMachine(),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 18),
+                  const BetControlBar(),
+                  const SizedBox(height: 14),
                   const SpinSection(),
                   const SizedBox(height: 16),
                   const ContextualActionChip(),
