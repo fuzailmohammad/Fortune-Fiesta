@@ -239,9 +239,7 @@ class _SlotMachineState extends State<SlotMachine>
       ),
     );
   }
-
 }
-
 
 class SlotMachineFrame extends StatelessWidget {
   final Widget child;
@@ -786,7 +784,11 @@ class _SlotReelColumnState extends State<SlotReelColumn>
         final bool isFocused = !isRest || isCenterPayline;
 
         final bool showWinningLine = !Get.isRegistered<SettingsController>() ||
-            Get.find<SettingsController>().settings.value.gameplay.showWinningLine;
+            Get.find<SettingsController>()
+                .settings
+                .value
+                .gameplay
+                .showWinningLine;
         final bool isWinningSymbol =
             isCenterPayline && widget.isWinning && showWinningLine;
 
