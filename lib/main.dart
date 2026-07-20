@@ -3,8 +3,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:fortune_fiesta/app/app.dart';
 
 void main() async {
-  await initGetStorage();
   WidgetsFlutterBinding.ensureInitialized();
+  await initGetStorage();
   runApp(const App());
 }
 
