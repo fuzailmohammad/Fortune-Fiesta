@@ -6,46 +6,61 @@ import '../modules/auth/signup/bindings/auth_signup_binding.dart';
 import '../modules/auth/signup/views/auth_signup_view.dart';
 import '../modules/auth/verify-otp/bindings/auth_verify_otp_binding.dart';
 import '../modules/auth/verify-otp/views/auth_verify_otp_view.dart';
-import '../modules/gallery/bindings/gallery_binding.dart';
-import '../modules/gallery/views/gallery_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/premium_home/bindings/premium_home_binding.dart';
+import '../modules/premium_home/views/premium_home_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
+import '../modules/premium_home/views/retention_dashboard_screen.dart';
+import '../modules/premium_home/views/shop_dashboard_screen.dart';
+import '../modules/adaptive_experience/views/player_journey_timeline_screen.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   static final pages = [
     GetPage(
-      name: Routes.SPLASH,
+      name: Routes.splash,
       page: () => const SplashView(),
       binding: SplashBinding(),
     ),
     GetPage(
-      name: Routes.AUTH_LOGIN,
+      name: Routes.authLogin,
       page: () => const AuthLoginView(),
       binding: AuthLoginBinding(),
     ),
     GetPage(
-      name: Routes.AUTH_VERIFY_OTP,
+      name: Routes.authVerifyOTP,
       page: () => const AuthVerifyOtpView(),
       binding: AuthVerifyOtpBinding(),
     ),
     GetPage(
-      name: Routes.AUTH_SIGNUP,
+      name: Routes.authSignup,
       page: () => const AuthSignupView(),
       binding: AuthSignupBinding(),
     ),
     GetPage(
-      name: Routes.HOME,
+      name: Routes.home,
       page: () => const HomeView(),
       binding: HomeBinding(),
     ),
     GetPage(
-      name: Routes.GALLERY,
-      page: () => const GalleryView(),
-      binding: GalleryBinding(),
+      name: Routes.premiumHome,
+      page: () => const PremiumHomeView(),
+      binding: PremiumHomeBinding(),
+    ),
+    GetPage(
+      name: Routes.retention,
+      page: () => const RetentionDashboardScreen(),
+    ),
+    GetPage(
+      name: Routes.shop,
+      page: () => const ShopDashboardScreen(),
+    ),
+    GetPage(
+      name: Routes.growthHub,
+      page: () => const PlayerJourneyTimelineScreen(),
     ),
   ];
 }

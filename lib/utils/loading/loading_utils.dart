@@ -7,10 +7,8 @@ class LoadingUtils {
   static void showLoader() {
     if (!isLoaderShowing) {
       Get.dialog(
-        WillPopScope(
-          onWillPop: () {
-            return Future.value(false);
-          },
+        PopScope(
+          canPop: false,
           child: const Center(child: CircularProgressIndicator()),
         ),
         barrierDismissible: false,

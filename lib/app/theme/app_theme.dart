@@ -5,7 +5,7 @@ class AppTheme {
   static final theme = ThemeData(
     fontFamily: 'lobster',
     appBarTheme: const AppBarTheme(
-      color: AppColors.purpleRoyal
+      backgroundColor: AppColors.purpleRoyal
     ),
     colorScheme: ColorScheme.fromSwatch().copyWith(
       primary: AppColors.purpleRoyal,

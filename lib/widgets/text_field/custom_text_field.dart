@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:fortune_fiesta/app/theme/app_colors.dart';
 import 'package:fortune_fiesta/app/theme/styles.dart';
 import 'package:fortune_fiesta/utils/helper/text_field_wrapper.dart';
+import 'package:get/get.dart';
 
 class CustomTextField extends StatelessWidget {
   final String hintText;
@@ -11,7 +11,8 @@ class CustomTextField extends StatelessWidget {
   final TextFieldWrapper wrapper;
   final bool isEnabled;
 
-  const CustomTextField({super.key,
+  const CustomTextField({
+    super.key,
     required this.wrapper,
     required this.hintText,
     this.maxLength,

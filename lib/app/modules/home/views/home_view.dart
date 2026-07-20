@@ -49,10 +49,12 @@ class HomeView extends GetView<HomeController> {
                     const SizedBox(
                       width: 5,
                     ),
-                    Obx(() => Text(
-                      controller.tempScore.value.toString(),
-                      style: Styles.tsGoldenBold18,
-                    ),)
+                    Obx(
+                      () => Text(
+                        controller.tempScore.value.toString(),
+                        style: Styles.tsGoldenBold18,
+                      ),
+                    )
                   ],
                 )),
               ),
@@ -104,50 +106,47 @@ class HomeView extends GetView<HomeController> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Obx(
-                            () => PinScrollWidget(
-                              onSelectedItemChanged: (int value) {
-                                controller.pageOne = value;
-                                controller.firstScore = controller.pinListOne[value].value;
-                              },
-                              controller: controller.scrollWheelOneController,
-                              childCount: controller.pinListOne.length,
-                              builder: (BuildContext context, int index) {
-                                return ImageBox(
-                                  image: controller.pinListOne[index].imageName,
-                                );
-                              },
-                            ),
+                          PinScrollWidget(
+                            onSelectedItemChanged: (int value) {
+                              controller.pageOne = value;
+                              controller.firstScore =
+                                  controller.pinListOne[value].value;
+                            },
+                            controller: controller.scrollWheelOneController,
+                            childCount: controller.pinListOne.length,
+                            builder: (BuildContext context, int index) {
+                              return ImageBox(
+                                image: controller.pinListOne[index].imageName,
+                              );
+                            },
                           ),
-                          Obx(
-                            () => PinScrollWidget(
-                              onSelectedItemChanged: (int value) {
-                                controller.secondScore = controller.pinListTwo[value].value;
-                                controller.pageTwo = value;
-                              },
-                              controller: controller.scrollWheelTwoController,
-                              childCount: controller.pinListTwo.length,
-                              builder: (BuildContext context, int index) {
-                                return ImageBox(
-                                  image: controller.pinListTwo[index].imageName,
-                                );
-                              },
-                            ),
+                          PinScrollWidget(
+                            onSelectedItemChanged: (int value) {
+                              controller.secondScore =
+                                  controller.pinListTwo[value].value;
+                              controller.pageTwo = value;
+                            },
+                            controller: controller.scrollWheelTwoController,
+                            childCount: controller.pinListTwo.length,
+                            builder: (BuildContext context, int index) {
+                              return ImageBox(
+                                image: controller.pinListTwo[index].imageName,
+                              );
+                            },
                           ),
-                          Obx(
-                            () => PinScrollWidget(
-                              onSelectedItemChanged: (int value) {
-                                controller.thirdScore = controller.pinListThree[value].value;
-                                controller.pageThree = value;
-                              },
-                              controller: controller.scrollWheelThreeController,
-                              childCount: controller.pinListThree.length,
-                              builder: (BuildContext context, int index) {
-                                return ImageBox(
-                                  image: controller.pinListThree[index].imageName,
-                                );
-                              },
-                            ),
+                          PinScrollWidget(
+                            onSelectedItemChanged: (int value) {
+                              controller.thirdScore =
+                                  controller.pinListThree[value].value;
+                              controller.pageThree = value;
+                            },
+                            controller: controller.scrollWheelThreeController,
+                            childCount: controller.pinListThree.length,
+                            builder: (BuildContext context, int index) {
+                              return ImageBox(
+                                image: controller.pinListThree[index].imageName,
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -156,8 +155,6 @@ class HomeView extends GetView<HomeController> {
                 ),
                 PrimaryFilledButton(
                     text: Strings.spin, onTap: controller.spinWheel),
-                PrimaryFilledButton(
-                    text: Strings.spin, onTap: controller.debugPrintF)
               ],
             ),
           ),
@@ -187,11 +184,7 @@ class PinScrollWidget extends StatelessWidget {
       width: (Get.width - 40) / 3,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: AppColors.black,
-          width: 3
-        )
-      ),
+          border: Border.all(color: AppColors.black, width: 3)),
       child: ListWheelScrollView.useDelegate(
         controller: controller,
         physics: const NeverScrollableScrollPhysics(),

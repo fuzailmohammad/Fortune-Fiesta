@@ -1,10 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:fortune_fiesta/app/theme/app_colors.dart';
-import 'package:fortune_fiesta/utils/helper/custom_snackbar.dart';
-
 import 'package:fortune_fiesta/app/data/models/response/error_response.dart';
 import 'package:fortune_fiesta/app/data/values/strings.dart';
+import 'package:fortune_fiesta/app/theme/app_colors.dart';
+import 'package:fortune_fiesta/utils/helper/custom_snackbar.dart';
 
 class APIException implements Exception {
   final String message;
@@ -37,7 +36,7 @@ class ExceptionHandler {
 class HandleError {
   HandleError._privateConstructor();
 
-  static handleError(APIException? error) {
+  static void handleError(APIException? error) {
     showCustomSnackbar(Strings.error,
         error?.message ?? ErrorMessages.networkGeneral, Colors.redAccent);
   }

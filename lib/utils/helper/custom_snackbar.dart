@@ -19,7 +19,7 @@ void showCustomSnackbar(String title, String message, Color color) {
     isDismissible: true,
     forwardAnimationCurve: Curves.easeOutBack,
     reverseAnimationCurve: Curves.easeInBack,
-    overlayColor: Colors.black87.withOpacity(0.7),
+    overlayColor: Colors.black87.withValues(alpha: 0.7),
     overlayBlur: 3,
     icon: const Icon(
       Icons.error,

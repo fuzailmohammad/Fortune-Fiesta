@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fortune_fiesta/app/data/values/images.dart';
 import 'package:fortune_fiesta/app/data/values/strings.dart';
-import 'package:fortune_fiesta/app/routes/app_pages.dart';
 import 'package:fortune_fiesta/utils/helper/exception_handler.dart';
 import 'package:get/get.dart';
 
@@ -43,7 +42,6 @@ class HomeController extends GetxController {
 
   List<PinList> get pinListThree => _pinListThree;
 
-
   @override
   void onReady() {
     super.onReady();
@@ -55,7 +53,7 @@ class HomeController extends GetxController {
     timer?.cancel();
   }
 
-  generateImage() {
+  void generateImage() {
     startTimer();
     generateListOne();
     generateListTwo();
@@ -65,7 +63,7 @@ class HomeController extends GetxController {
     _pinListThree.shuffle();
   }
 
-  generateListOne() {
+  void generateListOne() {
     _pinListOne.add(PinList(imageName: Images.barZero, value: 0));
     _pinListOne.add(PinList(imageName: Images.barOne, value: 1));
     _pinListOne.add(PinList(imageName: Images.barTwo, value: 2));
@@ -78,7 +76,7 @@ class HomeController extends GetxController {
     _pinListOne.add(PinList(imageName: Images.barNine, value: 9));
   }
 
-  generateListTwo() {
+  void generateListTwo() {
     _pinListTwo.add(PinList(imageName: Images.barZero, value: 0));
     _pinListTwo.add(PinList(imageName: Images.barOne, value: 1));
     _pinListTwo.add(PinList(imageName: Images.barTwo, value: 2));
@@ -91,7 +89,7 @@ class HomeController extends GetxController {
     _pinListTwo.add(PinList(imageName: Images.barNine, value: 9));
   }
 
-  generateListThree() {
+  void generateListThree() {
     _pinListThree.add(PinList(imageName: Images.barZero, value: 0));
     _pinListThree.add(PinList(imageName: Images.barOne, value: 1));
     _pinListThree.add(PinList(imageName: Images.barTwo, value: 2));
@@ -117,7 +115,7 @@ class HomeController extends GetxController {
     );
   }
 
-  spinWheel() async {
+  Future<void> spinWheel() async {
     if (!isSpinning) {
       isSpinning = true;
       _pinListOne.shuffle();
@@ -146,12 +144,12 @@ class HomeController extends GetxController {
     scoreLogic();
   }
 
-  scrollControl(FixedExtentScrollController controller, int counter) {
+  void scrollControl(FixedExtentScrollController controller, int counter) {
     controller.animateToItem(counter,
         duration: spinDuration, curve: Curves.easeInCubic);
   }
 
-  scoreLogic() {
+  void scoreLogic() {
     int multiplier = 0;
     int grandTotal = firstScore + secondScore + thirdScore;
     if (firstScore == secondScore && secondScore == thirdScore) {
@@ -168,10 +166,6 @@ class HomeController extends GetxController {
     firstScore = 0;
     secondScore = 0;
     thirdScore = 0;
-  }
-
-  debugPrintF() {
-Get.toNamed(Routes.GALLERY);
   }
 
   int equalScoreCalculation(int total) {
